@@ -1,0 +1,375 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Please Find Your Seat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0b0d;
+      --card: rgba(255,255,255,0.06);
+      --card2: rgba(255,255,255,0.10);
+      --text: #f7f7f7;
+      --muted: rgba(255,255,255,0.72);
+      --border: rgba(255,255,255,0.12);
+      --red: #b22222;
+      --green: #2f6f4e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(1200px 600px at 20% 0%, rgba(178,34,34,0.18), transparent 60%),
+        radial-gradient(900px 500px at 80% 0%, rgba(47,111,78,0.18), transparent 60%),
+        radial-gradient(800px 700px at 50% 120%, rgba(255,255,255,0.08), transparent 60%),
+        var(--bg);
+      color: var(--text);
+      font-family: Montserrat, system-ui, -apple-system, Segoe UI, sans-serif;
+      display: flex;
+      justify-content: center;
+      padding: 28px 16px 48px;
+    }
+    .wrap {
+      width: 100%;
+      max-width: 900px;
+    }
+    .card {
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, var(--card), rgba(255,255,255,0.03));
+      border-radius: 22px;
+      padding: 26px 18px 24px;
+      box-shadow: 0 18px 60px rgba(0,0,0,0.45);
+      overflow: hidden;
+      position: relative;
+    }
+    .card:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(700px 220px at 50% 0%, rgba(255,255,255,0.10), transparent 55%);
+      pointer-events: none;
+    }
+    .top {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      padding: 4px 8px 14px;
+    }
+    h1 {
+      font-family: "Great Vibes", cursive;
+      font-weight: 400;
+      margin: 6px 0 6px;
+      font-size: 56px;
+      letter-spacing: 0.02em;
+    }
+    .sub {
+      margin: 0 auto 10px;
+      color: var(--muted);
+      font-size: 14px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      max-width: 620px;
+      line-height: 1.5;
+    }
+    .accent-line {
+      height: 2px;
+      width: 240px;
+      margin: 14px auto 0;
+      background: linear-gradient(90deg, transparent, var(--red), var(--green), transparent);
+      border-radius: 999px;
+      opacity: 0.9;
+    }
+
+    .search {
+      position: relative;
+      z-index: 1;
+      margin: 18px auto 0;
+      max-width: 720px;
+    }
+    .label {
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 8px 4px;
+    }
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    input[type="text"] {
+      flex: 1;
+      min-width: 240px;
+      border-radius: 999px;
+      padding: 14px 16px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(0,0,0,0.28);
+      color: var(--text);
+      font-size: 16px;
+      outline: none;
+    }
+    input[type="text"]::placeholder { color: rgba(255,255,255,0.45); }
+    input[type="text"]:focus {
+      border-color: rgba(47,111,78,0.65);
+      box-shadow: 0 0 0 3px rgba(47,111,78,0.20);
+    }
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 14px 18px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .btn-find {
+      background: linear-gradient(135deg, rgba(47,111,78,1), rgba(178,34,34,1));
+      color: white;
+    }
+    .btn-clear {
+      background: rgba(255,255,255,0.10);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+
+    .results {
+      margin: 16px auto 0;
+      max-width: 720px;
+      position: relative;
+      z-index: 1;
+    }
+    .results-title {
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 10px 4px;
+    }
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      margin-bottom: 8px;
+    }
+    .name {
+      font-weight: 600;
+    }
+    .table {
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.95);
+      background: linear-gradient(90deg, rgba(178,34,34,0.85), rgba(47,111,78,0.85));
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .hint {
+      color: rgba(255,255,255,0.70);
+      font-size: 14px;
+      margin: 10px 4px 0;
+      line-height: 1.45;
+    }
+
+    .tables {
+      margin-top: 22px;
+      border-top: 1px dashed rgba(255,255,255,0.18);
+      padding-top: 16px;
+      position: relative;
+      z-index: 1;
+    }
+    details {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 16px;
+      padding: 10px 12px;
+      margin: 10px 0;
+    }
+    summary {
+      cursor: pointer;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 12px;
+      color: rgba(255,255,255,0.88);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      list-style: none;
+    }
+    summary::marker { display: none; }
+    .chev { opacity: 0.7; }
+    ul { margin: 10px 0 0; padding: 0 0 0 6px; }
+    li {
+      list-style: none;
+      padding: 6px 0;
+      border-bottom: 1px dotted rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.88);
+      font-size: 14px;
+    }
+    li:last-child { border-bottom: none; }
+
+    .footer {
+      margin-top: 18px;
+      text-align: center;
+      color: rgba(255,255,255,0.62);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 520px) {
+      h1 { font-size: 44px; }
+      .sub { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="top">
+        <h1>Please Find Your Seat</h1>
+        <p class="sub">Search your first or last name to see your table number.</p>
+        <div class="accent-line"></div>
+      </div>
+
+      <div class="search">
+        <div class="label">Search by first or last name</div>
+        <div class="row">
+          <input id="nameInput" type="text" placeholder="Start typing your name..." />
+          <button class="btn-find" id="searchBtn">Find</button>
+          <button class="btn-clear" id="clearBtn" type="button">Clear</button>
+        </div>
+      </div>
+
+      <div class="results" id="results"></div>
+
+      <div class="tables">
+        <details>
+          <summary>
+            View all tables
+            <span class="chev">▾</span>
+          </summary>
+          <div id="tablesContainer"></div>
+        </details>
+      </div>
+
+      <div class="footer">
+        If you need help, please ask a member of our wedding party. ♥
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const guests = [{'first': 'Aaron', 'last': 'Aden', 'table': '14'}, {'first': 'Jaimee', 'last': 'Meeks', 'table': '14'}, {'first': 'Daniel', 'last': 'Alamilla', 'table': '15'}, {'first': 'Fiona', 'last': 'Wong', 'table': '15'}, {'first': 'Courtney', 'last': 'Berry', 'table': '13'}, {'first': 'John', 'last': 'West', 'table': '13'}, {'first': 'Julianna', 'last': 'Bone', 'table': '13'}, {'first': 'Trevor', 'last': 'Burgess', 'table': '13'}, {'first': 'Carlos', 'last': 'Cartagena', 'table': '14'}, {'first': 'Gold', 'last': 'Turner', 'table': '14'}, {'first': 'Katlin', 'last': 'Crabtree', 'table': '11'}, {'first': 'Israel', 'last': 'Jimenez', 'table': '11'}, {'first': 'Craig', 'last': 'Cripps', 'table': '9'}, {'first': 'Shelby', 'last': 'Cripps', 'table': '9'}, {'first': 'Abby', 'last': 'Davis', 'table': '2'}, {'first': 'Megan', 'last': 'Decot', 'table': '7'}, {'first': 'Jordan', 'last': 'Decot', 'table': '7'}, {'first': 'Jewlia', 'last': 'Gaitan', 'table': '1'}, {'first': 'Lilee', 'last': 'Gaitan', 'table': '15'}, {'first': 'Juan', 'last': 'Galaviz', 'table': '12'}, {'first': 'Courtney', 'last': 'Galloway', 'table': '2'}, {'first': 'Adriel', 'last': 'Rodriguez', 'table': '2'}, {'first': 'Gigi', 'last': 'Garrison', 'table': '15'}, {'first': 'Clinton', 'last': 'Garrison', 'table': '15'}, {'first': 'Jeanette', 'last': 'Garrison', 'table': '15'}, {'first': 'Kristin', 'last': 'Godoy', 'table': '13'}, {'first': 'Jackson', 'last': 'Godoy', 'table': '13'}, {'first': 'Julio', 'last': 'Gonzalez', 'table': '7'}, {'first': 'Eugenia', 'last': 'Romero', 'table': '7'}, {'first': 'Nicole', 'last': 'Gonzalez', 'table': '7'}, {'first': 'Anthony', 'last': 'Martinez', 'table': '7'}, {'first': 'Justin', 'last': 'Grack', 'table': '14'}, {'first': 'Federica', 'last': 'Grack', 'table': '14'}, {'first': 'Denise', 'last': 'Greene', 'table': '3'}, {'first': 'Jonathan', 'last': 'Greene', 'table': '6'}, {'first': 'Kendall', 'last': 'Greene', 'table': '2'}, {'first': 'Whitney', 'last': 'Greene', 'table': '6'}, {'first': 'Nathan', 'last': 'Greene', 'table': '6'}, {'first': 'Penelope', 'last': 'Greene', 'table': '6'}, {'first': 'Andrew', 'last': 'Groate', 'table': '8'}, {'first': 'Jaclyn', 'last': 'Groate', 'table': '8'}, {'first': 'Mimi', 'last': 'Haruna', 'table': '2'}, {'first': 'Alex', 'last': 'Battaglia', 'table': '2'}, {'first': 'Ruthie', 'last': 'Hebert', 'table': '6'}, {'first': 'Jerry', 'last': 'Hebert', 'table': '6'}, {'first': 'Yvonne', 'last': 'Hinojosa', 'table': '2'}, {'first': 'McKenzie', 'last': 'Janak', 'table': '9'}, {'first': 'Stephen', 'last': 'Janak', 'table': '9'}, {'first': 'Steven', 'last': 'John', 'table': '14'}, {'first': 'Jaisine', 'last': 'John', 'table': '14'}, {'first': 'Tia', 'last': 'Johnson', 'table': '7'}, {'first': 'Brooke', 'last': 'Koch', 'table': '10'}, {'first': 'Joseph', 'last': 'Koch', 'table': '10'}, {'first': 'Evie', 'last': 'Koch', 'table': '10'}, {'first': 'Chelsea', 'last': 'Koch', 'table': '10'}, {'first': 'Jake', 'last': 'Koch', 'table': '10'}, {'first': 'Caroline', 'last': 'Koch', 'table': '10'}, {'first': 'Colt', 'last': 'Koch', 'table': '10'}, {'first': 'Gary', 'last': 'Koch', 'table': '3'}, {'first': 'Susan', 'last': 'Rice', 'table': '3'}, {'first': 'George', 'last': 'Koch', 'table': '3'}, {'first': 'Elsie', 'last': 'Koch', 'table': '3'}, {'first': 'Greg', 'last': 'Koch', 'table': '3'}, {'first': 'JoAnn', 'last': 'Koch', 'table': 'Bride'}, {'first': 'Ryan', 'last': 'Willy', 'table': 'Groom'}, {'first': 'Tricia', 'last': 'Koch', 'table': '3'}, {'first': 'Eve', 'last': 'Lamenza', 'table': '9'}, {'first': 'Craig', 'last': 'Zabcik', 'table': '9'}, {'first': 'Kim', 'last': 'Lammers', 'table': '7'}, {'first': 'Jose', 'last': 'Lopez', 'table': '15'}, {'first': 'Louise', 'last': 'Mackey', 'table': '13'}, {'first': 'Ben', 'last': 'Mackey', 'table': '13'}, {'first': 'Josh', 'last': 'Madigan', 'table': '14'}, {'first': 'Christopher', 'last': 'Miller', 'table': '11'}, {'first': 'Mollie', 'last': 'Miller', 'table': '11'}, {'first': 'Maureen', 'last': 'Miller', 'table': '3'}, {'first': 'Nikki', 'last': 'Miller', 'table': '11'}, {'first': 'Trey', 'last': 'Miller', 'table': '11'}, {'first': 'Mason', 'last': 'Miller', 'table': '11'}, {'first': 'Max', 'last': 'Miller', 'table': '11'}, {'first': 'Brandon', 'last': 'Musick', 'table': '5'}, {'first': 'Christy', 'last': 'Musick', 'table': '5'}, {'first': 'Tino', 'last': 'Mutandiro', 'table': '2'}, {'first': 'Tyrus', 'last': 'Carothers', 'table': '2'}, {'first': 'Tristan', 'last': 'Niedermeier', 'table': '7'}, {'first': 'Donavan', 'last': "O'Connell", 'table': '12'}, {'first': 'Mary K', 'last': "O'Connell", 'table': '12'}, {'first': 'Summer', 'last': 'Patton', 'table': '6'}, {'first': 'Ross', 'last': 'Patton', 'table': '6'}, {'first': 'Haley', 'last': 'Pearson', 'table': '13'}, {'first': 'James', 'last': 'Pearson', 'table': '13'}, {'first': 'Hope', 'last': 'Perri', 'table': '8'}, {'first': 'Michael', 'last': 'Perri', 'table': '8'}, {'first': 'Jordan', 'last': 'Pena', 'table': '12'}, {'first': 'Dago', 'last': 'Pena', 'table': '12'}, {'first': 'Susan', 'last': 'Phillips', 'table': '7'}, {'first': 'Helen', 'last': 'Porter', 'table': '3'}, {'first': 'Quincy', 'last': 'Richerson', 'table': '3'}, {'first': 'Brandon', 'last': 'Rogers', 'table': '14'}, {'first': 'Rosie', 'last': 'Rosales', 'table': '9'}, {'first': 'Melissa', 'last': 'Rosales', 'table': '9'}, {'first': 'Reyna', 'last': 'Ross', 'table': '11'}, {'first': 'Andres', 'last': 'Romero', 'table': '11'}, {'first': 'Byron', 'last': 'Russell', 'table': '10'}, {'first': 'Ann', 'last': 'Russell', 'table': '10'}, {'first': 'Rency', 'last': 'Shah', 'table': '8'}, {'first': 'Swapnil', 'last': 'Shah', 'table': '8'}, {'first': 'Lucas', 'last': 'Sims', 'table': '8'}, {'first': 'Yanira', 'last': 'Sims', 'table': '8'}, {'first': 'Ronnie', 'last': 'Slate', 'table': '5'}, {'first': 'Neville', 'last': 'Slate', 'table': '5'}, {'first': 'Ethan', 'last': 'Sliva', 'table': '12'}, {'first': 'LeeAnn', 'last': 'Sliva', 'table': '12'}, {'first': 'Paul', 'last': 'Sliva', 'table': '12'}, {'first': 'Christian', 'last': 'Smith', 'table': '1'}, {'first': 'Jessica', 'last': 'Boerger', 'table': '1'}, {'first': 'Gena Lea', 'last': 'Smith', 'table': '12'}, {'first': 'Darve', 'last': 'Smith', 'table': '12'}, {'first': 'Lucas', 'last': 'Smith', 'table': '1'}, {'first': 'Kelly', 'last': 'Smith', 'table': '1'}, {'first': 'William', 'last': 'Smith', 'table': '1'}, {'first': 'Trevor', 'last': 'Smith', 'table': '1'}, {'first': 'Brooke', 'last': 'Smith', 'table': '1'}, {'first': 'Madison', 'last': 'Sumrall', 'table': '4'}, {'first': 'Gabe', 'last': 'Sumrall', 'table': '4'}, {'first': 'Sarah', 'last': 'Terrazas', 'table': '8'}, {'first': 'Juan', 'last': 'Martinez', 'table': '8'}, {'first': 'Toni', 'last': 'Treesh', 'table': '9'}, {'first': 'Mark', 'last': 'Treesh', 'table': '9'}, {'first': 'Roy', 'last': 'Triplet', 'table': '1'}, {'first': 'Rachel', 'last': 'Vance', 'table': '6'}, {'first': 'Bill', 'last': 'Vance', 'table': '6'}, {'first': 'Ben', 'last': 'Weaver', 'table': '4'}, {'first': 'Aaron', 'last': 'Willy', 'table': '5'}, {'first': 'Brandi', 'last': 'Musick', 'table': '5'}, {'first': 'Max', 'last': 'Willy', 'table': '5'}, {'first': 'Crystal', 'last': 'Willy', 'table': '4'}, {'first': 'Chris', 'last': 'Willy', 'table': '4'}, {'first': 'Elliot', 'last': 'Willy', 'table': '4'}, {'first': 'Abigail', 'last': 'Willy', 'table': '4'}, {'first': 'Jon', 'last': 'Willy', 'table': '15'}, {'first': 'Kammi', 'last': 'Eastwood', 'table': '15'}, {'first': 'Kathryn', 'last': 'Willy', 'table': '4'}, {'first': 'Brenden', 'last': 'Sexton', 'table': '4'}, {'first': 'Louis', 'last': 'Willy', 'table': '5'}, {'first': 'Patricia', 'last': 'Willy', 'table': '5'}, {'first': 'Grandad', 'last': 'Willy', 'table': '5'}, {'first': 'LeeAnn', 'last': 'Woolsey', 'table': '4'}, {'first': 'Trevett', 'last': 'Young', 'table': '1'}, {'first': 'Christian', 'last': 'Young', 'table': '1'}, {'first': 'Anthony', 'last': 'Zadoorian', 'table': '1'}, {'first': 'Karla', 'last': 'Zadoorian', 'table': '1'}, {'first': 'Arthur', 'last': 'Zadoorian', 'table': '1'}];
+
+    const nameInput = document.getElementById("nameInput");
+    const resultsEl = document.getElementById("results");
+    const searchBtn = document.getElementById("searchBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const tablesContainer = document.getElementById("tablesContainer");
+
+    function normalize(str) {
+      return (str || "").trim().toLowerCase();
+    }
+
+    function renderResults(matches, query) {
+      if (!query || !query.trim()) {
+        resultsEl.innerHTML = "";
+        return;
+      }
+      if (!matches.length) {
+        resultsEl.innerHTML = `
+          <div class="results-title">Results</div>
+          <div class="hint">No matches found for "<b>${query}</b>". Try typing just your last name.</div>
+        `;
+        return;
+      }
+      const html = [
+        `<div class="results-title">Results</div>`,
+        ...matches.slice(0, 8).map(m => `
+          <div class="result-item">
+            <div class="name">${m.first} ${m.last}</div>
+            <div class="table">Table ${m.table}</div>
+          </div>
+        `),
+        matches.length > 8 ? `<div class="hint">Showing the first 8 matches. Try adding more letters to narrow it down.</div>` : ``
+      ].join("");
+      resultsEl.innerHTML = html;
+    }
+
+    function handleSearch() {
+      const query = nameInput.value;
+      const q = normalize(query);
+      if (!q) {
+        renderResults([], "");
+        return;
+      }
+      const matches = guests.filter(g => {
+        const full = normalize(g.first + " " + g.last);
+        return full.includes(q) || normalize(g.first).includes(q) || normalize(g.last).includes(q);
+      });
+      renderResults(matches, query);
+    }
+
+    function handleClear() {
+      nameInput.value = "";
+      resultsEl.innerHTML = "";
+      nameInput.focus();
+    }
+
+    function renderTables() {
+      const byTable = {};
+      guests.forEach(g => {
+        const t = g.table || "Unassigned";
+        if (!byTable[t]) byTable[t] = [];
+        byTable[t].push(g);
+      });
+
+      const sorted = Object.keys(byTable).sort((a,b) => {
+        const na = parseInt(a,10), nb = parseInt(b,10);
+        if (!isNaN(na) && !isNaN(nb)) return na-nb;
+        return a.localeCompare(b);
+      });
+
+      tablesContainer.innerHTML = sorted.map(t => {
+        const people = byTable[t]
+          .sort((a,b) => (a.last || "").localeCompare(b.last || "") || (a.first || "").localeCompare(b.first || ""))
+          .map(g => `<li>${g.first} ${g.last}</li>`)
+          .join("");
+        return `
+          <details>
+            <summary>Table ${t} <span class="chev">▾</span></summary>
+            <ul>${people}</ul>
+          </details>
+        `;
+      }).join("");
+    }
+
+    // Events
+    searchBtn.addEventListener("click", (e) => { e.preventDefault(); handleSearch(); });
+    clearBtn.addEventListener("click", (e) => { e.preventDefault(); handleClear(); });
+    nameInput.addEventListener("input", () => {
+      // live search as they type
+      handleSearch();
+    });
+    nameInput.addEventListener("keyup", (e) => {
+      if (e.key === "Enter") handleSearch();
+    });
+
+    renderTables();
+  </script>
+</body>
+</html>
